@@ -9,6 +9,7 @@ import com.mongodb.WriteConcern;
 import eu.europeana.corelib.definitions.jibx.RDF;
 import eu.europeana.corelib.definitions.solr.DocType;
 import eu.europeana.corelib.edm.exceptions.MongoDBException;
+import eu.europeana.corelib.edm.exceptions.MongoRuntimeException;
 import eu.europeana.corelib.mongo.server.EdmMongoServer;
 import eu.europeana.corelib.solr.bean.impl.FullBeanImpl;
 import eu.europeana.corelib.solr.entity.*;
@@ -393,6 +394,8 @@ public class FullBeanHandler implements ICollection {
             return (FullBeanImpl) mongoServer.getFullBean(fullBean.getAbout());
         } catch (MongoDBException e) {
             log.log(Level.SEVERE, e.getMessage());
+        } catch (MongoRuntimeException e) {
+            e.printStackTrace();
         }
         return fullBean;
     }
