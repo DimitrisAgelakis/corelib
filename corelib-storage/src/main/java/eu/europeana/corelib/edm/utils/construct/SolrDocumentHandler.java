@@ -6,14 +6,14 @@
 
 package eu.europeana.corelib.edm.utils.construct;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
+import eu.europeana.corelib.definitions.edm.entity.*;
+import eu.europeana.corelib.definitions.model.EdmLabel;
+import eu.europeana.corelib.solr.bean.impl.FullBeanImpl;
+import eu.europeana.corelib.solr.entity.LicenseImpl;
 import eu.europeana.corelib.solr.entity.ServiceImpl;
+import eu.europeana.publication.common.ICollection;
+import eu.europeana.publication.common.IDocument;
+import eu.europeana.publication.common.State;
 import org.apache.solr.client.solrj.SolrServer;
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.util.ClientUtils;
@@ -22,19 +22,12 @@ import org.apache.solr.common.SolrDocumentList;
 import org.apache.solr.common.SolrInputDocument;
 import org.apache.solr.common.params.ModifiableSolrParams;
 
-import eu.europeana.corelib.definitions.edm.entity.Agent;
-import eu.europeana.corelib.definitions.edm.entity.Aggregation;
-import eu.europeana.corelib.definitions.edm.entity.Concept;
-import eu.europeana.corelib.definitions.edm.entity.License;
-import eu.europeana.corelib.definitions.edm.entity.Place;
-import eu.europeana.corelib.definitions.edm.entity.Proxy;
-import eu.europeana.corelib.definitions.edm.entity.Timespan;
-import eu.europeana.corelib.definitions.model.EdmLabel;
-import eu.europeana.corelib.solr.bean.impl.FullBeanImpl;
-import eu.europeana.corelib.solr.entity.LicenseImpl;
-import eu.europeana.publication.common.ICollection;
-import eu.europeana.publication.common.IDocument;
-import eu.europeana.publication.common.State;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Class that converts a FullBean to a SolrInputDocument and saves it
@@ -64,6 +57,7 @@ public class SolrDocumentHandler implements ICollection {
 			add("has_media");
 			add("filter_tags");
 			add("facet_tags");
+			add("has_landingpage");
 		}
 	};
 

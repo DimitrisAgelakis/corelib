@@ -1,5 +1,24 @@
 package eu.europeana.corelib.edm.utils.construct;
 
+import com.google.code.morphia.query.Query;
+import com.google.code.morphia.query.UpdateOperations;
+import com.mongodb.BasicDBObject;
+import com.mongodb.DBCollection;
+import com.mongodb.DBObject;
+import com.mongodb.WriteConcern;
+import eu.europeana.corelib.definitions.jibx.RDF;
+import eu.europeana.corelib.definitions.solr.DocType;
+import eu.europeana.corelib.edm.exceptions.MongoDBException;
+import eu.europeana.corelib.mongo.server.EdmMongoServer;
+import eu.europeana.corelib.solr.bean.impl.FullBeanImpl;
+import eu.europeana.corelib.solr.entity.*;
+import eu.europeana.publication.common.ICollection;
+import eu.europeana.publication.common.IDocument;
+import eu.europeana.publication.common.State;
+import org.apache.solr.client.solrj.SolrServer;
+import org.apache.solr.client.solrj.SolrServerException;
+import org.apache.solr.client.solrj.util.ClientUtils;
+
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
@@ -8,27 +27,6 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
-
-import eu.europeana.corelib.solr.entity.*;
-import org.apache.solr.client.solrj.SolrServer;
-import org.apache.solr.client.solrj.SolrServerException;
-import org.apache.solr.client.solrj.util.ClientUtils;
-
-import com.google.code.morphia.query.Query;
-import com.google.code.morphia.query.UpdateOperations;
-import com.mongodb.BasicDBObject;
-import com.mongodb.DBCollection;
-import com.mongodb.DBObject;
-import com.mongodb.WriteConcern;
-
-import eu.europeana.corelib.definitions.jibx.RDF;
-import eu.europeana.corelib.definitions.solr.DocType;
-import eu.europeana.corelib.edm.exceptions.MongoDBException;
-import eu.europeana.corelib.mongo.server.EdmMongoServer;
-import eu.europeana.corelib.solr.bean.impl.FullBeanImpl;
-import eu.europeana.publication.common.ICollection;
-import eu.europeana.publication.common.IDocument;
-import eu.europeana.publication.common.State;
 
 public class FullBeanHandler implements ICollection {
 
@@ -172,14 +170,14 @@ public class FullBeanHandler implements ICollection {
         DBObject europeanaAggregationQuery = new BasicDBObject("about",
                 Pattern.compile("^/aggregation/europeana/" + collection + "/"));
         europeanaAggregations.remove(europeanaAggregationQuery,
-                WriteConcern.REPLICAS_SAFE);
-        records.remove(query, WriteConcern.REPLICAS_SAFE);
-        proxies.remove(europeanaProxyQuery, WriteConcern.REPLICAS_SAFE);
-        proxies.remove(proxyQuery, WriteConcern.REPLICAS_SAFE);
-        physicalThing.remove(proxyQuery, WriteConcern.REPLICAS_SAFE);
-        physicalThing.remove(europeanaProxyQuery, WriteConcern.REPLICAS_SAFE);
-        providedCHOs.remove(providedCHOQuery, WriteConcern.REPLICAS_SAFE);
-        aggregations.remove(aggregationQuery, WriteConcern.REPLICAS_SAFE);
+                WriteConcern.FSYNC_SAFE);
+        records.remove(query, WriteConcern.FSYNC_SAFE);
+        proxies.remove(europeanaProxyQuery, WriteConcern.FSYNC_SAFE);
+        proxies.remove(proxyQuery, WriteConcern.FSYNC_SAFE);
+        physicalThing.remove(proxyQuery, WriteConcern.FSYNC_SAFE);
+        physicalThing.remove(europeanaProxyQuery, WriteConcern.FSYNC_SAFE);
+        providedCHOs.remove(providedCHOQuery, WriteConcern.FSYNC_SAFE);
+        aggregations.remove(aggregationQuery, WriteConcern.FSYNC_SAFE);
     }
 
     public void saveEdmClasses(FullBeanImpl fullBean, boolean isFirstSave) throws NoSuchMethodException, IllegalAccessException,InvocationTargetException{
